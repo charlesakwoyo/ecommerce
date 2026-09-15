@@ -7,7 +7,7 @@
 
         <div>
             <label for="category_id" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Category</label>
-            <select id="category_id" wire:model="category_id" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800">
+            <select id="category_id" wire:model="category_id" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800">
                 <option value="">No category</option>
                 @foreach ($categories as $cat)
                     <option value="{{ $cat->id }}">{{ $cat->name }}</option>
@@ -18,12 +18,12 @@
 
         <div>
             <label for="description" class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
-            <textarea id="description" wire:model="description" rows="5" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800"></textarea>
+            <textarea id="description" wire:model="description" rows="5" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"></textarea>
             @error('description') <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p> @enderror
         </div>
 
         <div class="grid grid-cols-3 gap-4">
-            <x-input name="price" label="Price (USD)" wire:model="price" :error="$errors->first('price')" />
+            <x-input name="price" label="Price (KSh)" wire:model="price" :error="$errors->first('price')" />
             <x-input name="stock" type="number" label="Stock" wire:model="stock" :error="$errors->first('stock')" />
             <x-input name="sku" label="SKU" wire:model="sku" :error="$errors->first('sku')" />
         </div>

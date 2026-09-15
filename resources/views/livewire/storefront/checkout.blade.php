@@ -13,7 +13,7 @@
         @if ($savedAddresses->isNotEmpty())
             <div class="mb-4 space-y-2">
                 @foreach ($savedAddresses as $address)
-                    <label class="flex cursor-pointer items-start gap-3 rounded-md border border-gray-200 p-3 text-sm dark:border-gray-800 {{ ! $useNewAddress && $selectedAddressId === $address->id ? 'border-indigo-500 ring-1 ring-indigo-500' : '' }}">
+                    <label class="flex cursor-pointer items-start gap-3 rounded-md border border-gray-200 p-3 text-sm dark:border-gray-800 {{ ! $useNewAddress && $selectedAddressId === $address->id ? 'border-brand-500 ring-1 ring-brand-500' : '' }}">
                         <input
                             type="radio"
                             name="address"
@@ -30,7 +30,7 @@
                     </label>
                 @endforeach
 
-                <label class="flex cursor-pointer items-center gap-3 rounded-md border border-gray-200 p-3 text-sm dark:border-gray-800 {{ $useNewAddress ? 'border-indigo-500 ring-1 ring-indigo-500' : '' }}">
+                <label class="flex cursor-pointer items-center gap-3 rounded-md border border-gray-200 p-3 text-sm dark:border-gray-800 {{ $useNewAddress ? 'border-brand-500 ring-1 ring-brand-500' : '' }}">
                     <input type="radio" name="address" wire:click="$set('useNewAddress', true)" @checked($useNewAddress)>
                     <span class="font-medium">Use a new address</span>
                 </label>
@@ -66,14 +66,14 @@
             @foreach ($cart->items as $item)
                 <div class="flex justify-between">
                     <span>{{ $item->product->name }} &times; {{ $item->quantity }}</span>
-                    <span>${{ number_format($item->subtotal() / 100, 2) }}</span>
+                    <span><x-money :amount="$item->subtotal()" /></span>
                 </div>
             @endforeach
 
             <div class="border-t border-gray-200 pt-3 font-semibold dark:border-gray-800">
                 <div class="flex justify-between">
                     <span>Total</span>
-                    <span>${{ number_format($cart->subtotal() / 100, 2) }}</span>
+                    <span><x-money :amount="$cart->subtotal()" /></span>
                 </div>
             </div>
         </div>
@@ -82,7 +82,7 @@
             wire:click="placeOrder"
             wire:loading.attr="disabled"
             wire:target="placeOrder"
-            class="mt-4 w-full rounded-md bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-indigo-500 disabled:opacity-60"
+            class="mt-4 w-full rounded-md bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 disabled:opacity-60"
         >
             <span wire:loading.remove wire:target="placeOrder">Continue to payment</span>
             <span wire:loading wire:target="placeOrder">Redirecting to Stripe&hellip;</span>

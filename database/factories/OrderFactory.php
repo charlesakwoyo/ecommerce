@@ -31,7 +31,7 @@ class OrderFactory extends Factory
             'tax' => 0,
             'shipping' => $shipping,
             'total' => $subtotal + $shipping,
-            'currency' => 'usd',
+            'currency' => 'kes',
             'shipping_address' => [
                 'name' => fake()->name(),
                 'line1' => fake()->streetAddress(),

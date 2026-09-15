@@ -10,7 +10,7 @@
     @if ($cart->items->isEmpty())
         <div class="rounded-lg border border-dashed border-gray-300 py-16 text-center dark:border-gray-700">
             <p class="text-gray-500 dark:text-gray-400">Your cart is empty.</p>
-            <a href="{{ route('products.index') }}" wire:navigate class="mt-4 inline-block text-sm font-medium text-indigo-600 hover:underline dark:text-indigo-400">
+            <a href="{{ route('products.index') }}" wire:navigate class="mt-4 inline-block text-sm font-medium text-brand-600 hover:underline dark:text-brand-400">
                 Browse products &rarr;
             </a>
         </div>
@@ -36,12 +36,12 @@
                                             <img src="{{ $item->product->images->first()->url }}" class="h-full w-full object-cover">
                                         @endif
                                     </div>
-                                    <a href="{{ route('products.show', $item->product) }}" wire:navigate class="font-medium hover:text-indigo-600 dark:hover:text-indigo-400">
+                                    <a href="{{ route('products.show', $item->product) }}" wire:navigate class="font-medium hover:text-brand-600 dark:hover:text-brand-400">
                                         {{ $item->product->name }}
                                     </a>
                                 </div>
                             </td>
-                            <td class="px-4 py-4">${{ number_format($item->unit_price / 100, 2) }}</td>
+                            <td class="px-4 py-4"><x-money :amount="$item->unit_price" /></td>
                             <td class="px-4 py-4">
                                 <input
                                     type="number"
@@ -52,7 +52,7 @@
                                     class="w-20 rounded-md border border-gray-300 px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-800"
                                 >
                             </td>
-                            <td class="px-4 py-4 font-medium">${{ number_format($item->subtotal() / 100, 2) }}</td>
+                            <td class="px-4 py-4 font-medium"><x-money :amount="$item->subtotal()" /></td>
                             <td class="px-4 py-4 text-right">
                                 <button wire:click="remove({{ $item->id }})" class="text-sm text-red-600 hover:underline dark:text-red-400">
                                     Remove
@@ -68,14 +68,14 @@
             <div class="w-full max-w-xs space-y-2 text-sm">
                 <div class="flex justify-between font-semibold text-base">
                     <span>Subtotal</span>
-                    <span>${{ number_format($cart->subtotal() / 100, 2) }}</span>
+                    <span><x-money :amount="$cart->subtotal()" /></span>
                 </div>
                 <p class="text-xs text-gray-500 dark:text-gray-400">Shipping and taxes calculated at checkout.</p>
 
                 <a
                     href="{{ route('checkout.show') }}"
                     wire:navigate
-                    class="mt-4 block w-full rounded-md bg-indigo-600 px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-indigo-500"
+                    class="mt-4 block w-full rounded-md bg-brand-500 px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-brand-600"
                 >
                     Proceed to checkout
                 </a>

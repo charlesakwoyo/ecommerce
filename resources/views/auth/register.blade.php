@@ -13,7 +13,7 @@
 
         <p class="text-center text-sm text-gray-600 dark:text-gray-400">
             Already have an account?
-            <a href="{{ route('login') }}" class="text-indigo-600 hover:underline dark:text-indigo-400">Log in</a>
+            <a href="{{ route('login') }}" class="text-brand-600 hover:underline dark:text-brand-400">Log in</a>
         </p>
     </form>
 </x-layouts.guest>

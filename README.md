@@ -1,58 +1,185 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# SwiftHub
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+SwiftHub is a single-vendor e-commerce storefront for the Kenyan market, built with Laravel and Livewire. It covers the full flow from browsing a product catalogue through to a Stripe-powered checkout and order history, plus an admin panel for managing products, categories and orders.
 
-## About Laravel
+All pricing is in Kenyan Shillings (KES), and the storefront ships with a seeded catalogue of realistic Kenyan-market products across 8 categories.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tech stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+| Layer | Choice |
+|---|---|
+| Framework | Laravel 13 (PHP 8.4) |
+| Frontend | Livewire 4 + Blade (no separate JS framework/SPA) |
+| Styling | Tailwind CSS v4, bundled with Vite |
+| Auth | Laravel Fortify (headless) for the web app; Laravel Sanctum (token auth) for the API |
+| Payments | Laravel Cashier + Stripe Checkout (one-off payments, not subscriptions) |
+| Database | MySQL (local dev), SQLite (automatically used for tests) |
+| API docs | [Scramble](https://scramble.dedoc.co/) — auto-generated OpenAPI/Swagger |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Features
 
-## Learning Laravel
+**Storefront**
+- Product catalogue with categories, search and filtering
+- Product detail pages with related products
+- Session-based cart for guests, merged into the user's cart on login
+- Stripe Checkout with stock reservation during checkout
+- Order history and order detail pages
+- Account settings with optional two-factor authentication
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+**Admin** (`/admin`, requires an admin account)
+- Dashboard with product/order counts and revenue
+- Product management (create, edit, images, stock, active/inactive)
+- Category management
+- Order management and status tracking
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+**API** (`/api/v1`) — a token-authenticated JSON API covering browsing, cart, checkout and orders, documented with interactive Swagger/OpenAPI docs. See [API](#api) below.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Requirements
 
-## Agentic Development
+- PHP 8.4+
+- Composer
+- Node.js + npm
+- MySQL (or edit `.env` to use SQLite)
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Getting started
 
 ```bash
-composer require laravel/boost --dev
+# Install dependencies
+composer install
+npm install
 
-php artisan boost:install
+# Environment
+cp .env.example .env
+php artisan key:generate
+
+# Point .env at your database, then:
+php artisan migrate --seed
+php artisan storage:link
+
+# Build frontend assets
+npm run build
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### Running the app
 
-## Contributing
+`composer run dev` starts the PHP dev server, the queue listener and the Vite dev server together:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+composer run dev
+```
 
-## Code of Conduct
+The app will be available at the `APP_URL` configured in `.env` (defaults to `http://localhost:8000`).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Seeded accounts
 
-## Security Vulnerabilities
+`php artisan migrate --seed` creates two accounts, both with password `password`:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| Email | Role |
+|---|---|
+| `admin@example.com` | Admin (can access `/admin`) |
+| `test@example.com` | Regular customer |
+
+It also seeds 8 categories and ~46 Kenyan-market products with placeholder images. Re-seed at any time with:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+### Stripe
+
+Checkout requires real Stripe test keys. Add them to `.env`:
+
+```
+STRIPE_KEY=
+STRIPE_SECRET=
+STRIPE_WEBHOOK_SECRET=
+CASHIER_CURRENCY=kes
+```
+
+Without valid keys, checkout will fail when it reaches Stripe.
+
+## API
+
+SwiftHub exposes a versioned JSON API under `/api/v1`, separate from the Livewire web app, for building a mobile app or third-party integration against the same catalogue, cart and checkout.
+
+### Interactive docs (Swagger/OpenAPI)
+
+Full interactive API documentation is generated automatically from the route definitions, form requests and API resources — no hand-written spec to keep in sync:
+
+- **Swagger UI:** `http://localhost:8000/docs/api`
+- **Raw OpenAPI spec:** `http://localhost:8000/docs/api.json`
+
+The UI includes a "Try it" panel for calling endpoints directly from the browser.
+
+### Authentication
+
+The API uses [Sanctum](https://laravel.com/docs/sanctum) personal access tokens (not the web session). Register or log in to receive a token, then send it as a Bearer token on subsequent requests:
+
+```bash
+curl -X POST http://localhost:8000/api/v1/login \
+  -H "Content-Type: application/json" -H "Accept: application/json" \
+  -d '{"email":"test@example.com","password":"password","device_name":"my-app"}'
+# => { "user": {...}, "token": "1|xxxxxxxx..." }
+
+curl http://localhost:8000/api/v1/me \
+  -H "Authorization: Bearer 1|xxxxxxxx..." -H "Accept: application/json"
+```
+
+### Endpoints
+
+| Method | Endpoint | Auth | Description |
+|---|---|---|---|
+| POST | `/api/v1/register` | — | Create an account, returns a token |
+| POST | `/api/v1/login` | — | Exchange credentials for a token |
+| POST | `/api/v1/logout` | ✓ | Revoke the current token |
+| GET | `/api/v1/me` | ✓ | Current authenticated user |
+| GET | `/api/v1/categories` | — | List categories with product counts |
+| GET | `/api/v1/products` | — | List/search products (`q`, `category` query params), paginated |
+| GET | `/api/v1/products/{product}` | — | Show a product by slug |
+| GET | `/api/v1/cart` | ✓ | View the current user's cart |
+| POST | `/api/v1/cart/items` | ✓ | Add a product to the cart |
+| PATCH | `/api/v1/cart/items/{cartItem}` | ✓ | Update a cart item's quantity |
+| DELETE | `/api/v1/cart/items/{cartItem}` | ✓ | Remove a cart item |
+| POST | `/api/v1/checkout` | ✓ | Reserve stock, create an order and return a Stripe Checkout URL |
+| GET | `/api/v1/orders` | ✓ | List the current user's orders |
+| GET | `/api/v1/orders/{order}` | ✓ | Show one of the current user's orders |
+
+`✓` routes require `Authorization: Bearer <token>`. The full request/response shape for every endpoint — including validation error formats — is in the Swagger UI.
+
+## Testing
+
+```bash
+php artisan test
+```
+
+Tests run against an in-memory SQLite database automatically (see `phpunit.xml`) and don't touch your local MySQL database.
+
+## Code style
+
+This project uses [Laravel Pint](https://laravel.com/docs/pint) for formatting:
+
+```bash
+vendor/bin/pint
+```
+
+## Project structure
+
+Domain models live under `app/Models`: `Category` (self-referencing), `Product`, `ProductImage`, `Address`, `Cart`/`CartItem`, `Order`/`OrderItem`. Storefront and admin Livewire components live under `app/Livewire/Storefront` and `app/Livewire/Admin`, with matching Blade views in `resources/views/livewire`. Shared layouts (`app`, `guest`, `admin`) live in `resources/views/components/layouts`.
+
+The API layer lives alongside the web app and reuses the same models/services: controllers under `app/Http/Controllers/Api/V1`, request validation under `app/Http/Requests/Api/V1`, and response shaping under `app/Http/Resources`. Routes are in `routes/api.php`.
+
+Checkout reserves stock and creates a `Pending` order before handing off to Stripe Checkout; `App\Http\Controllers\StripeWebhookController` marks orders paid (or releases reserved stock on an expired session) via Stripe webhooks.
+
+## Known limitations
+
+This is a demo/portfolio build, not production-ready. Notably missing:
+
+- Real product photography (seeded products use a generated placeholder image showing the product name)
+- Tax and shipping cost calculation (columns exist, currently always 0)
+- Product variants (size/colour)
+- Reviews, ratings, wishlists, coupon codes
+- Email verification (Fortify feature is present but disabled)
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Built on the [Laravel framework](https://laravel.com), open-sourced under the [MIT license](https://opensource.org/licenses/MIT).

@@ -30,16 +30,16 @@
                             <tr>
                                 <td class="px-4 py-4">
                                     @if ($item->product)
-                                        <a href="{{ route('products.show', $item->product) }}" wire:navigate class="font-medium hover:text-indigo-600 dark:hover:text-indigo-400">
+                                        <a href="{{ route('products.show', $item->product) }}" wire:navigate class="font-medium hover:text-brand-600 dark:hover:text-brand-400">
                                             {{ $item->name }}
                                         </a>
                                     @else
                                         {{ $item->name }}
                                     @endif
                                 </td>
-                                <td class="px-4 py-4">${{ number_format($item->unit_price / 100, 2) }}</td>
+                                <td class="px-4 py-4"><x-money :amount="$item->unit_price" /></td>
                                 <td class="px-4 py-4">{{ $item->quantity }}</td>
-                                <td class="px-4 py-4 font-medium">${{ number_format($item->subtotal() / 100, 2) }}</td>
+                                <td class="px-4 py-4 font-medium"><x-money :amount="$item->subtotal()" /></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -51,11 +51,11 @@
             <div>
                 <h2 class="mb-2 text-sm font-semibold uppercase text-gray-500 dark:text-gray-400">Summary</h2>
                 <div class="space-y-1 rounded-lg border border-gray-200 p-4 text-sm dark:border-gray-800">
-                    <div class="flex justify-between"><span>Subtotal</span><span>${{ number_format($order->subtotal / 100, 2) }}</span></div>
-                    <div class="flex justify-between"><span>Shipping</span><span>${{ number_format($order->shipping / 100, 2) }}</span></div>
-                    <div class="flex justify-between"><span>Tax</span><span>${{ number_format($order->tax / 100, 2) }}</span></div>
+                    <div class="flex justify-between"><span>Subtotal</span><span><x-money :amount="$order->subtotal" /></span></div>
+                    <div class="flex justify-between"><span>Shipping</span><span><x-money :amount="$order->shipping" /></span></div>
+                    <div class="flex justify-between"><span>Tax</span><span><x-money :amount="$order->tax" /></span></div>
                     <div class="flex justify-between border-t border-gray-200 pt-2 font-semibold dark:border-gray-800">
-                        <span>Total</span><span>${{ number_format($order->total / 100, 2) }}</span>
+                        <span>Total</span><span><x-money :amount="$order->total" /></span>
                     </div>
                 </div>
             </div>

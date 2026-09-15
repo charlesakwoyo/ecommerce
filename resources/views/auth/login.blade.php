@@ -21,8 +21,8 @@
         <x-button class="w-full">Log in</x-button>
 
         <div class="flex items-center justify-between text-sm">
-            <a href="{{ route('password.request') }}" class="text-indigo-600 hover:underline dark:text-indigo-400">Forgot password?</a>
-            <a href="{{ route('register') }}" class="text-indigo-600 hover:underline dark:text-indigo-400">Create account</a>
+            <a href="{{ route('password.request') }}" class="text-brand-600 hover:underline dark:text-brand-400">Forgot password?</a>
+            <a href="{{ route('register') }}" class="text-brand-600 hover:underline dark:text-brand-400">Create account</a>
         </div>
     </form>
 </x-layouts.guest>

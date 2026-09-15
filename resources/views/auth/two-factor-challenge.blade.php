@@ -21,7 +21,7 @@
 
             <x-button class="w-full">Continue</x-button>
 
-            <button type="button" class="w-full text-center text-sm text-indigo-600 hover:underline dark:text-indigo-400" @click="useRecovery = ! useRecovery">
+            <button type="button" class="w-full text-center text-sm text-brand-600 hover:underline dark:text-brand-400" @click="useRecovery = ! useRecovery">
                 <span x-show="! useRecovery">Use a recovery code instead</span>
                 <span x-show="useRecovery" x-cloak>Use an authentication code instead</span>
             </button>

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedInteger('tax')->default(0);
             $table->unsignedInteger('shipping')->default(0);
             $table->unsignedInteger('total');
-            $table->string('currency', 3)->default('usd');
+            $table->string('currency', 3)->default('kes');
             $table->json('shipping_address')->nullable();
             $table->json('billing_address')->nullable();
             $table->string('stripe_checkout_session_id')->nullable()->unique();

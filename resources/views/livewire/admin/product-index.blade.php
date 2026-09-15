@@ -1,7 +1,7 @@
 <div>
     <div class="mb-6 flex items-center justify-between gap-4">
         <h1 class="text-xl font-semibold">Products</h1>
-        <a href="{{ route('admin.products.create') }}" wire:navigate class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500">
+        <a href="{{ route('admin.products.create') }}" wire:navigate class="rounded-md bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600">
             New product
         </a>
     </div>
@@ -10,7 +10,7 @@
         type="search"
         wire:model.live.debounce.400ms="search"
         placeholder="Search products..."
-        class="mb-4 w-full max-w-sm rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800"
+        class="mb-4 w-full max-w-sm rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
     >
 
     <div class="overflow-hidden rounded-lg border border-gray-200 dark:border-gray-800">
@@ -30,7 +30,7 @@
                     <tr wire:key="admin-product-{{ $product->id }}">
                         <td class="px-4 py-3 font-medium">{{ $product->name }}</td>
                         <td class="px-4 py-3 text-gray-500 dark:text-gray-400">{{ $product->category?->name ?? '—' }}</td>
-                        <td class="px-4 py-3">${{ number_format($product->price / 100, 2) }}</td>
+                        <td class="px-4 py-3"><x-money :amount="$product->price" /></td>
                         <td class="px-4 py-3 {{ $product->stock <= 5 ? 'text-red-600 dark:text-red-400' : '' }}">{{ $product->stock }}</td>
                         <td class="px-4 py-3">
                             <button
@@ -41,7 +41,7 @@
                             </button>
                         </td>
                         <td class="px-4 py-3 text-right">
-                            <a href="{{ route('admin.products.edit', $product) }}" wire:navigate class="mr-3 text-indigo-600 hover:underline dark:text-indigo-400">Edit</a>
+                            <a href="{{ route('admin.products.edit', $product) }}" wire:navigate class="mr-3 text-brand-600 hover:underline dark:text-brand-400">Edit</a>
                             <button
                                 wire:click="delete({{ $product->id }})"
                                 wire:confirm="Delete this product? This cannot be undone."

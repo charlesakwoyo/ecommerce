@@ -14,19 +14,21 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            'Electronics',
-            'Home & Kitchen',
-            'Clothing & Accessories',
-            'Books',
-            'Sports & Outdoors',
-            'Toys & Games',
+            'Phones & Tablets' => 'Smartphones, tablets and mobile accessories from the brands Kenyans trust.',
+            'Electronics' => 'TVs, audio, kitchen appliances and gadgets for the modern home.',
+            'Home & Kitchen' => 'Cookware, décor and everyday essentials for the Kenyan household.',
+            'Fashion' => 'Ankara, kitenge and everyday wear for men and women.',
+            'Health & Beauty' => 'Skincare, haircare and personal care favourites.',
+            'Supermarket' => 'Pantry staples and groceries delivered to your door.',
+            'Computing' => 'Laptops, accessories and office essentials.',
+            'Sports & Outdoors' => 'Gear for football, fitness and outdoor life.',
         ];
 
-        foreach ($categories as $name) {
+        foreach ($categories as $name => $description) {
             Category::query()->create([
                 'name' => $name,
                 'slug' => Str::slug($name),
-                'description' => fake()->sentence(),
+                'description' => $description,
             ]);
         }
     }

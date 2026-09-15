@@ -16,7 +16,7 @@
         </div>
         <div class="rounded-lg border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-900">
             <p class="text-sm text-gray-500 dark:text-gray-400">Revenue (paid)</p>
-            <p class="mt-1 text-2xl font-semibold">${{ number_format($revenue / 100, 2) }}</p>
+            <p class="mt-1 text-2xl font-semibold"><x-money :amount="$revenue" /></p>
         </div>
     </div>
 
@@ -37,13 +37,13 @@
                     @forelse ($recentOrders as $order)
                         <tr>
                             <td class="px-4 py-3">
-                                <a href="{{ route('admin.orders.show', $order) }}" wire:navigate class="font-medium text-indigo-600 hover:underline dark:text-indigo-400">
+                                <a href="{{ route('admin.orders.show', $order) }}" wire:navigate class="font-medium text-brand-600 hover:underline dark:text-brand-400">
                                     {{ $order->order_number }}
                                 </a>
                             </td>
                             <td class="px-4 py-3">{{ $order->user?->name ?? 'Guest' }}</td>
                             <td class="px-4 py-3"><x-order-status-badge :status="$order->status" /></td>
-                            <td class="px-4 py-3">${{ number_format($order->total / 100, 2) }}</td>
+                            <td class="px-4 py-3"><x-money :amount="$order->total" /></td>
                         </tr>
                     @empty
                         <tr><td class="px-4 py-6 text-center text-gray-500" colspan="4">No orders yet.</td></tr>
