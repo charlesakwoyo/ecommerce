@@ -21,7 +21,7 @@ class Home extends Component
                 ->active()
                 ->with('images')
                 ->latest()
-                ->take(8)
+                ->take(24)
                 ->get(),
         ]);
     }

@@ -4,7 +4,7 @@
     @if ($orders->isEmpty())
         <div class="rounded-lg border border-dashed border-gray-300 py-16 text-center dark:border-gray-700">
             <p class="text-gray-500 dark:text-gray-400">You haven't placed any orders yet.</p>
-            <a href="{{ route('products.index') }}" wire:navigate class="mt-4 inline-block text-sm font-medium text-indigo-600 hover:underline dark:text-indigo-400">
+            <a href="{{ route('products.index') }}" wire:navigate class="mt-4 inline-block text-sm font-medium text-brand-600 hover:underline dark:text-brand-400">
                 Browse products &rarr;
             </a>
         </div>
@@ -28,9 +28,9 @@
                             <td class="px-4 py-4">
                                 <x-order-status-badge :status="$order->status" />
                             </td>
-                            <td class="px-4 py-4">${{ number_format($order->total / 100, 2) }}</td>
+                            <td class="px-4 py-4"><x-money :amount="$order->total" /></td>
                             <td class="px-4 py-4 text-right">
-                                <a href="{{ route('orders.show', $order) }}" wire:navigate class="text-indigo-600 hover:underline dark:text-indigo-400">
+                                <a href="{{ route('orders.show', $order) }}" wire:navigate class="text-brand-600 hover:underline dark:text-brand-400">
                                     View
                                 </a>
                             </td>

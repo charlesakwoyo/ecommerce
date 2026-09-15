@@ -10,13 +10,13 @@
 
         <div>
             @if ($product->category)
-                <a href="{{ route('products.index', ['category' => $product->category->slug]) }}" wire:navigate class="text-sm font-medium text-indigo-600 hover:underline dark:text-indigo-400">
+                <a href="{{ route('products.index', ['category' => $product->category->slug]) }}" wire:navigate class="text-sm font-medium text-brand-600 hover:underline dark:text-brand-400">
                     {{ $product->category->name }}
                 </a>
             @endif
 
             <h1 class="mt-1 text-2xl font-semibold">{{ $product->name }}</h1>
-            <p class="mt-3 text-2xl font-bold">${{ number_format($product->price / 100, 2) }}</p>
+            <p class="mt-3 text-2xl font-bold"><x-money :amount="$product->price" /></p>
 
             <p class="mt-4 whitespace-pre-line text-sm text-gray-600 dark:text-gray-400">{{ $product->description }}</p>
 
@@ -33,7 +33,7 @@
                                 min="1"
                                 max="{{ $product->stock }}"
                                 wire:model="quantity"
-                                class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800"
+                                class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
                             >
                         </div>
 

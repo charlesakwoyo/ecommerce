@@ -13,9 +13,9 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
     </head>
-    <body class="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4 py-12 text-gray-900 antialiased dark:bg-gray-950 dark:text-gray-100">
-        <a href="{{ route('home') }}" class="mb-6 text-xl font-semibold tracking-tight">
-            {{ config('app.name') }}
+    <body class="flex min-h-screen flex-col items-center justify-center bg-gray-100 px-4 py-12 text-gray-900 antialiased dark:bg-gray-950 dark:text-gray-100">
+        <a href="{{ route('home') }}" class="mb-6">
+            <x-logo class="h-9" />
         </a>
 
         <div class="w-full max-w-md rounded-lg border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-gray-900">

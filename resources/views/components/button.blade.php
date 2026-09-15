@@ -2,7 +2,7 @@
 
 @php
     $variants = [
-        'primary' => 'bg-indigo-600 text-white hover:bg-indigo-500 disabled:bg-indigo-300',
+        'primary' => 'bg-brand-500 text-white hover:bg-brand-600 disabled:bg-brand-300',
         'secondary' => 'border border-gray-300 text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800',
         'danger' => 'bg-red-600 text-white hover:bg-red-500 disabled:bg-red-300',
     ];

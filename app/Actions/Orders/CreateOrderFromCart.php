@@ -34,7 +34,7 @@ class CreateOrderFromCart
                 'tax' => 0,
                 'shipping' => 0,
                 'total' => 0,
-                'currency' => 'usd',
+                'currency' => config('cashier.currency'),
                 'shipping_address' => $shippingAddress->toSnapshot(),
                 'billing_address' => ($billingAddress ?? $shippingAddress)->toSnapshot(),
             ]);

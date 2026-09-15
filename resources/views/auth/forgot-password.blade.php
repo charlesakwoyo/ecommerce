@@ -18,7 +18,7 @@
         <x-button class="w-full">Send reset link</x-button>
 
         <p class="text-center text-sm">
-            <a href="{{ route('login') }}" class="text-indigo-600 hover:underline dark:text-indigo-400">Back to login</a>
+            <a href="{{ route('login') }}" class="text-brand-600 hover:underline dark:text-brand-400">Back to login</a>
         </p>
     </form>
 </x-layouts.guest>

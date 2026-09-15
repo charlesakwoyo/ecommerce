@@ -16,21 +16,21 @@
     <body class="min-h-screen bg-gray-50 text-gray-900 antialiased dark:bg-gray-950 dark:text-gray-100">
         <div class="flex min-h-screen">
             <aside class="hidden w-56 shrink-0 border-r border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 sm:block">
-                <a href="{{ route('home') }}" class="mb-6 block text-lg font-semibold tracking-tight">
-                    {{ config('app.name') }}
+                <a href="{{ route('home') }}" class="mb-6 block">
+                    <x-logo class="h-8" />
                 </a>
 
                 <nav class="flex flex-col gap-1 text-sm font-medium">
-                    <a href="{{ route('admin.dashboard') }}" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 {{ request()->routeIs('admin.dashboard') ? 'bg-gray-100 dark:bg-gray-800' : '' }}">
+                    <a href="{{ route('admin.dashboard') }}" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 {{ request()->routeIs('admin.dashboard') ? 'bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-400' : '' }}">
                         Dashboard
                     </a>
-                    <a href="{{ route('admin.products.index') }}" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 {{ request()->routeIs('admin.products.*') ? 'bg-gray-100 dark:bg-gray-800' : '' }}">
+                    <a href="{{ route('admin.products.index') }}" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 {{ request()->routeIs('admin.products.*') ? 'bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-400' : '' }}">
                         Products
                     </a>
-                    <a href="{{ route('admin.categories.index') }}" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 {{ request()->routeIs('admin.categories.*') ? 'bg-gray-100 dark:bg-gray-800' : '' }}">
+                    <a href="{{ route('admin.categories.index') }}" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 {{ request()->routeIs('admin.categories.*') ? 'bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-400' : '' }}">
                         Categories
                     </a>
-                    <a href="{{ route('admin.orders.index') }}" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 {{ request()->routeIs('admin.orders.*') ? 'bg-gray-100 dark:bg-gray-800' : '' }}">
+                    <a href="{{ route('admin.orders.index') }}" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 {{ request()->routeIs('admin.orders.*') ? 'bg-brand-50 text-brand-700 dark:bg-brand-900/30 dark:text-brand-400' : '' }}">
                         Orders
                     </a>
 
@@ -44,7 +44,10 @@
 
             <div class="flex-1">
                 <header class="border-b border-gray-200 bg-white px-6 py-4 dark:border-gray-800 dark:bg-gray-900 sm:hidden">
-                    <span class="text-lg font-semibold">{{ config('app.name') }} Admin</span>
+                    <div class="flex items-center gap-2">
+                        <x-logo class="h-7" />
+                        <span class="text-sm font-semibold text-gray-500 dark:text-gray-400">Admin</span>
+                    </div>
                 </header>
 
                 <main class="mx-auto max-w-5xl px-6 py-8">

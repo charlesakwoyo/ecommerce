@@ -2,7 +2,7 @@
     <div class="mb-6 flex items-center justify-between gap-4">
         <h1 class="text-xl font-semibold">Orders</h1>
 
-        <select wire:model.live="status" class="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800">
+        <select wire:model.live="status" class="rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800">
             <option value="">All statuses</option>
             @foreach ($statuses as $case)
                 <option value="{{ $case->value }}">{{ $case->label() }}</option>
@@ -29,9 +29,9 @@
                         <td class="px-4 py-3">{{ $order->user?->name ?? 'Guest' }}</td>
                         <td class="px-4 py-3 text-gray-500 dark:text-gray-400">{{ $order->created_at->format('M j, Y') }}</td>
                         <td class="px-4 py-3"><x-order-status-badge :status="$order->status" /></td>
-                        <td class="px-4 py-3">${{ number_format($order->total / 100, 2) }}</td>
+                        <td class="px-4 py-3"><x-money :amount="$order->total" /></td>
                         <td class="px-4 py-3 text-right">
-                            <a href="{{ route('admin.orders.show', $order) }}" wire:navigate class="text-indigo-600 hover:underline dark:text-indigo-400">View</a>
+                            <a href="{{ route('admin.orders.show', $order) }}" wire:navigate class="text-brand-600 hover:underline dark:text-brand-400">View</a>
                         </td>
                     </tr>
                 @empty
