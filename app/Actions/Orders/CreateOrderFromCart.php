@@ -9,11 +9,14 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
+use App\Services\PricingCalculator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class CreateOrderFromCart
 {
+    public function __construct(private PricingCalculator $pricing) {}
+
     /**
      * Create a pending order from the given cart, reserving stock for each item.
      *
@@ -59,9 +62,13 @@ class CreateOrderFromCart
                 $subtotal += $product->price * $item->quantity;
             }
 
+            $pricing = $this->pricing->calculate($subtotal, $shippingAddress->country);
+
             $order->update([
                 'subtotal' => $subtotal,
-                'total' => $subtotal + $order->tax + $order->shipping,
+                'tax' => $pricing['tax'],
+                'shipping' => $pricing['shipping'],
+                'total' => $subtotal + $pricing['tax'] + $pricing['shipping'],
             ]);
 
             $cart->items()->delete();

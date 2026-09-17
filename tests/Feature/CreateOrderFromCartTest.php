@@ -19,7 +19,7 @@ class CreateOrderFromCartTest extends TestCase
     public function test_it_creates_an_order_and_decrements_stock(): void
     {
         $user = User::factory()->create();
-        $address = Address::factory()->for($user)->create();
+        $address = Address::factory()->for($user)->create(['country' => 'US']);
         $product = Product::factory()->create(['stock' => 5, 'price' => 1000]);
 
         $this->actingAs($user);
@@ -31,10 +31,48 @@ class CreateOrderFromCartTest extends TestCase
 
         $this->assertSame(OrderStatus::Pending, $order->status);
         $this->assertSame(2000, $order->subtotal);
-        $this->assertSame(2000, $order->total);
+        $this->assertSame(0, $order->tax);
+        $this->assertSame(200000, $order->shipping);
+        $this->assertSame(202000, $order->total);
         $this->assertCount(1, $order->items);
         $this->assertSame(3, $product->fresh()->stock);
         $this->assertSame(0, $cart->items()->count());
+    }
+
+    public function test_it_charges_kenyan_vat_and_domestic_shipping_for_kenyan_addresses(): void
+    {
+        $user = User::factory()->create();
+        $address = Address::factory()->for($user)->create(['country' => 'KE']);
+        $product = Product::factory()->create(['stock' => 5, 'price' => 1000]);
+
+        $this->actingAs($user);
+        $cartService = app(CartService::class);
+        $cartService->add($product, 2);
+        $cart = $cartService->current();
+
+        $order = app(CreateOrderFromCart::class)->handle($cart, $user, $address);
+
+        $this->assertSame(2000, $order->subtotal);
+        $this->assertSame(320, $order->tax);
+        $this->assertSame(30000, $order->shipping);
+        $this->assertSame(32320, $order->total);
+    }
+
+    public function test_it_waives_shipping_once_the_free_threshold_is_reached(): void
+    {
+        $user = User::factory()->create();
+        $address = Address::factory()->for($user)->create(['country' => 'KE']);
+        $product = Product::factory()->create(['stock' => 5, 'price' => 1000000]);
+
+        $this->actingAs($user);
+        $cartService = app(CartService::class);
+        $cartService->add($product, 1);
+        $cart = $cartService->current();
+
+        $order = app(CreateOrderFromCart::class)->handle($cart, $user, $address);
+
+        $this->assertSame(0, $order->shipping);
+        $this->assertSame(160000, $order->tax);
     }
 
     public function test_it_throws_when_stock_is_insufficient(): void
