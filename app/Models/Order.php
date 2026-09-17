@@ -49,6 +49,50 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    /**
+     * Build Stripe Checkout line items for this order's products, plus
+     * shipping and tax as their own line items so the amount Stripe charges
+     * matches the order total.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function stripeLineItems(): array
+    {
+        $lineItems = $this->items->map(fn (OrderItem $item) => [
+            'price_data' => [
+                'currency' => $this->currency,
+                'product_data' => ['name' => $item->name],
+                'unit_amount' => $item->unit_price,
+            ],
+            'quantity' => $item->quantity,
+        ])->all();
+
+        if ($this->shipping > 0) {
+            $lineItems[] = $this->feeLineItem('Shipping', $this->shipping);
+        }
+
+        if ($this->tax > 0) {
+            $lineItems[] = $this->feeLineItem('Tax (VAT)', $this->tax);
+        }
+
+        return $lineItems;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function feeLineItem(string $name, int $amount): array
+    {
+        return [
+            'price_data' => [
+                'currency' => $this->currency,
+                'product_data' => ['name' => $name],
+                'unit_amount' => $amount,
+            ],
+            'quantity' => 1,
+        ];
+    }
+
     #[Scope]
     protected function forUser(Builder $query, User $user): Builder
     {

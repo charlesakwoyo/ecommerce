@@ -44,16 +44,7 @@ class CheckoutController extends Controller
             return response()->json(['message' => $exception->getMessage()], 422);
         }
 
-        $lineItems = $order->items->map(fn ($item) => [
-            'price_data' => [
-                'currency' => $order->currency,
-                'product_data' => ['name' => $item->name],
-                'unit_amount' => $item->unit_price,
-            ],
-            'quantity' => $item->quantity,
-        ])->all();
-
-        $checkout = $user->checkout($lineItems, [
+        $checkout = $user->checkout($order->stripeLineItems(), [
             'success_url' => $request->validated('success_url'),
             'cancel_url' => $request->validated('cancel_url'),
             'metadata' => ['order_id' => $order->id],

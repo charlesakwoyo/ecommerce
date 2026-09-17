@@ -12,6 +12,7 @@ use App\Models\Address;
 use App\Models\Order;
 use App\Services\CartService;
 use App\Services\MpesaService;
+use App\Services\PricingCalculator;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -100,16 +101,7 @@ class Checkout extends Component
 
     private function startStripeCheckout(Order $order): void
     {
-        $lineItems = $order->items->map(fn ($item) => [
-            'price_data' => [
-                'currency' => $order->currency,
-                'product_data' => ['name' => $item->name],
-                'unit_amount' => $item->unit_price,
-            ],
-            'quantity' => $item->quantity,
-        ])->all();
-
-        $checkout = auth()->user()->checkout($lineItems, [
+        $checkout = auth()->user()->checkout($order->stripeLineItems(), [
             'success_url' => route('orders.show', $order).'?checkout=success',
             'cancel_url' => route('checkout.show').'?checkout=cancelled',
             'metadata' => ['order_id' => $order->id],
@@ -222,10 +214,19 @@ class Checkout extends Component
         $cart = app(CartService::class)->current();
         $cart->load('items.product');
 
+        $country = $this->useNewAddress
+            ? $this->country
+            : auth()->user()->addresses()->find($this->selectedAddressId)?->country;
+
+        $pricing = $country
+            ? app(PricingCalculator::class)->calculate($cart->subtotal(), $country)
+            : ['tax' => 0, 'shipping' => 0];
+
         return view('livewire.storefront.checkout', [
             'cart' => $cart,
             'savedAddresses' => auth()->user()->addresses,
             'awaitingOrder' => $this->awaitingOrderId ? Order::query()->find($this->awaitingOrderId) : null,
+            'pricing' => $pricing,
         ]);
     }
 }

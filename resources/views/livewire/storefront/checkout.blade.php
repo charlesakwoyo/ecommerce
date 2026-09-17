@@ -82,7 +82,7 @@
                         <x-input name="city" label="City" wire:model="city" :error="$errors->first('city')" />
                         <x-input name="state" label="State / Province" wire:model="state" :error="$errors->first('state')" />
                         <x-input name="postal_code" label="Postal code" wire:model="postal_code" :error="$errors->first('postal_code')" />
-                        <x-input name="country" label="Country code (e.g. KE)" wire:model="country" maxlength="2" :error="$errors->first('country')" />
+                        <x-input name="country" label="Country code (e.g. KE)" wire:model.live="country" maxlength="2" :error="$errors->first('country')" />
                         <div class="sm:col-span-2">
                             <x-input name="phone" label="Phone (optional)" wire:model="phone" :error="$errors->first('phone')" />
                         </div>
@@ -132,10 +132,25 @@
                         </div>
                     @endforeach
 
+                    <div class="border-t border-gray-200 pt-3 dark:border-gray-800">
+                        <div class="flex justify-between">
+                            <span>Subtotal</span>
+                            <span><x-money :amount="$cart->subtotal()" /></span>
+                        </div>
+                        <div class="mt-1 flex justify-between">
+                            <span>Shipping</span>
+                            <span><x-money :amount="$pricing['shipping']" /></span>
+                        </div>
+                        <div class="mt-1 flex justify-between">
+                            <span>Tax (VAT)</span>
+                            <span><x-money :amount="$pricing['tax']" /></span>
+                        </div>
+                    </div>
+
                     <div class="border-t border-gray-200 pt-3 font-semibold dark:border-gray-800">
                         <div class="flex justify-between">
                             <span>Total</span>
-                            <span><x-money :amount="$cart->subtotal()" /></span>
+                            <span><x-money :amount="$cart->subtotal() + $pricing['shipping'] + $pricing['tax']" /></span>
                         </div>
                     </div>
                 </div>
