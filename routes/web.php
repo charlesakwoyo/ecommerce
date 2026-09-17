@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MpesaCallbackController;
 use App\Http\Controllers\StripeWebhookController;
 use App\Livewire\Admin\CategoryIndex as AdminCategoryIndex;
 use App\Livewire\Admin\Dashboard as AdminDashboard;
@@ -23,6 +24,12 @@ Route::get('/products/{product:slug}', ProductShow::class)->name('products.show'
 
 Route::get('/cart', Cart::class)->name('cart.show');
 
+Route::view('/about', 'pages.about')->name('pages.about');
+Route::view('/contact', 'pages.contact')->name('pages.contact');
+Route::view('/faq', 'pages.faq')->name('pages.faq');
+Route::view('/terms', 'pages.terms')->name('pages.terms');
+Route::view('/privacy', 'pages.privacy')->name('pages.privacy');
+
 Route::middleware('auth')->group(function () {
     Route::get('/checkout', Checkout::class)->name('checkout.show');
     Route::get('/orders', OrderIndex::class)->name('orders.index');
@@ -31,6 +38,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::post('/stripe/webhook', [StripeWebhookController::class, 'handleWebhook'])->name('cashier.webhook');
+Route::post('/mpesa/callback', [MpesaCallbackController::class, 'handle'])->name('mpesa.callback');
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', AdminDashboard::class)->name('dashboard');

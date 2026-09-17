@@ -15,8 +15,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable([
     'user_id', 'order_number', 'status', 'subtotal', 'tax', 'shipping', 'total',
-    'currency', 'shipping_address', 'billing_address',
-    'stripe_checkout_session_id', 'stripe_payment_intent_id', 'paid_at',
+    'currency', 'payment_method', 'shipping_address', 'billing_address',
+    'stripe_checkout_session_id', 'stripe_payment_intent_id',
+    'mpesa_checkout_request_id', 'mpesa_merchant_request_id', 'mpesa_receipt_number', 'mpesa_phone',
+    'paid_at',
 ])]
 class Order extends Model
 {

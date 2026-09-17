@@ -10,8 +10,16 @@ class CategoryNav extends Component
 {
     public function render(): View
     {
+        $categories = Category::query()
+            ->whereNull('parent_id')
+            ->withCount('products')
+            ->with(['children' => fn ($query) => $query->orderBy('name')])
+            ->orderBy('name')
+            ->get();
+
         return view('livewire.category-nav', [
-            'categories' => Category::query()->whereNull('parent_id')->orderBy('name')->take(8)->get(),
+            'allCategories' => $categories,
+            'quickLinks' => $categories->take(8),
         ]);
     }
 }
