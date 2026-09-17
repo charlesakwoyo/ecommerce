@@ -32,9 +32,7 @@
                             <td class="px-4 py-4">
                                 <div class="flex items-center gap-3">
                                     <div class="h-12 w-12 shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-gray-800">
-                                        @if ($item->product->images->first())
-                                            <img src="{{ $item->product->images->first()->url }}" class="h-full w-full object-cover">
-                                        @endif
+                                        <x-product-image :product="$item->product" />
                                     </div>
                                     <a href="{{ route('products.show', $item->product) }}" wire:navigate class="font-medium hover:text-brand-600 dark:hover:text-brand-400">
                                         {{ $item->product->name }}
