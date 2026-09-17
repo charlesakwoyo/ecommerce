@@ -19,7 +19,7 @@ class StripeWebhookController extends CashierWebhookController
         $orderId = $session['metadata']['order_id'] ?? null;
 
         if ($orderId && $order = Order::query()->find($orderId)) {
-            app(MarkOrderAsPaid::class)->handle($order, (string) $session['payment_intent']);
+            app(MarkOrderAsPaid::class)->handle($order, 'card', (string) $session['payment_intent']);
         }
 
         return $this->successMethod();

@@ -92,14 +92,78 @@
         </main>
 
         <footer class="mt-16 bg-navy-950 text-gray-400">
-            <div class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-                <x-logo variant="inverted" class="h-8" />
-                <p class="mt-4 max-w-md text-sm">
-                    Quality products, simple checkout, fast shipping &mdash; everything you need, delivered to your door.
-                </p>
+            <div class="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-4 py-12 sm:px-6 md:grid-cols-4 lg:grid-cols-5">
+                <div class="col-span-2 md:col-span-4 lg:col-span-1">
+                    <x-logo variant="inverted" class="h-8" />
+                    <p class="mt-4 max-w-xs text-sm">
+                        Quality products, simple checkout, fast delivery &mdash; everything you need, at honest
+                        prices in Kenyan Shillings.
+                    </p>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-semibold tracking-wide text-white uppercase">Customer care</h3>
+                    <ul class="mt-4 space-y-2 text-sm">
+                        <li><a href="{{ route('pages.faq') }}" wire:navigate class="hover:text-brand-400">Help Center / FAQ</a></li>
+                        <li><a href="{{ route('pages.contact') }}" wire:navigate class="hover:text-brand-400">Contact Us</a></li>
+                        <li><a href="{{ route('pages.faq') }}" wire:navigate class="hover:text-brand-400">Returns &amp; Refunds</a></li>
+                        <li><a href="{{ route('orders.index') }}" wire:navigate class="hover:text-brand-400">Track My Order</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-semibold tracking-wide text-white uppercase">Shop by category</h3>
+                    <div class="mt-4">
+                        <x-footer-categories />
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-semibold tracking-wide text-white uppercase">My account</h3>
+                    <ul class="mt-4 space-y-2 text-sm">
+                        @auth
+                            <li><a href="{{ route('profile.edit') }}" wire:navigate class="hover:text-brand-400">Account Settings</a></li>
+                            <li><a href="{{ route('orders.index') }}" wire:navigate class="hover:text-brand-400">Order History</a></li>
+                            <li><a href="{{ route('cart.show') }}" wire:navigate class="hover:text-brand-400">My Cart</a></li>
+                            @if (auth()->user()->is_admin)
+                                <li><a href="{{ route('admin.dashboard') }}" wire:navigate class="hover:text-brand-400">Admin Dashboard</a></li>
+                            @endif
+                        @else
+                            <li><a href="{{ route('login') }}" wire:navigate class="hover:text-brand-400">Log In</a></li>
+                            <li><a href="{{ route('register') }}" wire:navigate class="hover:text-brand-400">Create Account</a></li>
+                            <li><a href="{{ route('cart.show') }}" wire:navigate class="hover:text-brand-400">My Cart</a></li>
+                        @endauth
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-semibold tracking-wide text-white uppercase">About</h3>
+                    <ul class="mt-4 space-y-2 text-sm">
+                        <li><a href="{{ route('pages.about') }}" wire:navigate class="hover:text-brand-400">About {{ config('app.name') }}</a></li>
+                        <li><a href="{{ route('pages.terms') }}" wire:navigate class="hover:text-brand-400">Terms of Service</a></li>
+                        <li><a href="{{ route('pages.privacy') }}" wire:navigate class="hover:text-brand-400">Privacy Policy</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="border-t border-white/10 px-4 py-4 text-center text-xs sm:px-6">
-                &copy; {{ now()->year }} {{ config('app.name') }}. All rights reserved.
+
+            <div class="border-t border-white/10">
+                <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-6 sm:flex-row sm:px-6">
+                    <p class="text-xs">&copy; {{ now()->year }} {{ config('app.name') }}. All rights reserved.</p>
+
+                    <div class="flex items-center gap-3 text-xs font-medium text-gray-500">
+                        <span>We accept</span>
+                        <span class="rounded border border-white/15 px-2 py-1">Visa</span>
+                        <span class="rounded border border-white/15 px-2 py-1">Mastercard</span>
+                        <span class="rounded border border-white/15 px-2 py-1">Amex</span>
+                        <span class="rounded border border-green-500/30 px-2 py-1 font-semibold text-green-400">M-Pesa</span>
+                    </div>
+
+                    <div class="flex items-center gap-4 text-xs">
+                        <a href="{{ route('pages.terms') }}" wire:navigate class="hover:text-brand-400">Terms</a>
+                        <a href="{{ route('pages.privacy') }}" wire:navigate class="hover:text-brand-400">Privacy</a>
+                        <a href="{{ route('pages.faq') }}" wire:navigate class="hover:text-brand-400">FAQ</a>
+                    </div>
+                </div>
             </div>
         </footer>
 

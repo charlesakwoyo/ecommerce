@@ -12,7 +12,7 @@ All pricing is in Kenyan Shillings (KES), and the storefront ships with a seeded
 | Frontend | Livewire 4 + Blade (no separate JS framework/SPA) |
 | Styling | Tailwind CSS v4, bundled with Vite |
 | Auth | Laravel Fortify (headless) for the web app; Laravel Sanctum (token auth) for the API |
-| Payments | Laravel Cashier + Stripe Checkout (one-off payments, not subscriptions) |
+| Payments | Laravel Cashier + Stripe Checkout (card) and M-Pesa STK Push (Safaricom Daraja API) |
 | Database | MySQL (local dev), SQLite (automatically used for tests) |
 | API docs | [Scramble](https://scramble.dedoc.co/) — auto-generated OpenAPI/Swagger |
 
@@ -97,6 +97,27 @@ CASHIER_CURRENCY=kes
 ```
 
 Without valid keys, checkout will fail when it reaches Stripe.
+
+### M-Pesa (STK Push)
+
+Checkout also offers "Pay with M-Pesa" using Safaricom's Daraja API (Lipa Na M-Pesa Online / STK Push): the customer enters their phone number, gets a payment prompt on their handset, and the order is confirmed once they enter their PIN.
+
+Get app credentials from [developer.safaricom.co.ke](https://developer.safaricom.co.ke) and add them to `.env`:
+
+```
+MPESA_ENV=sandbox
+MPESA_CONSUMER_KEY=
+MPESA_CONSUMER_SECRET=
+MPESA_SHORTCODE=174379
+MPESA_PASSKEY=
+MPESA_CALLBACK_URL="${APP_URL}/mpesa/callback"
+```
+
+`MPESA_SHORTCODE` defaults to Safaricom's published sandbox test shortcode (`174379`); override it (and `MPESA_PASSKEY`) with your own app's values.
+
+**Callback URL:** Safaricom posts the payment result to `MPESA_CALLBACK_URL` asynchronously, and it must be a **publicly reachable HTTPS URL** — plain `localhost` will not work. For local development, expose your dev server with a tunnel (e.g. `ngrok http 8000`) and set `MPESA_CALLBACK_URL` to the resulting `https://*.ngrok-free.app/mpesa/callback` URL.
+
+Even without a working callback, the checkout page also **actively polls** Safaricom's STK push status query endpoint every few seconds, so payment confirmation still works end-to-end in local development once your Daraja credentials are valid.
 
 ## API
 
