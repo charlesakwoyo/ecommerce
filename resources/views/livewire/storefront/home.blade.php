@@ -35,9 +35,7 @@
                             class="rounded-lg bg-white/95 p-3 shadow-lg transition hover:-translate-y-1 {{ $loop->even ? 'mt-6' : '' }}"
                         >
                             <div class="aspect-square overflow-hidden rounded-md bg-gray-100">
-                                @if ($product->images->first())
-                                    <img src="{{ $product->images->first()->url }}" alt="{{ $product->name }}" class="h-full w-full object-cover">
-                                @endif
+                                <x-product-image :product="$product" />
                             </div>
                             <p class="mt-2 truncate text-xs font-medium text-gray-700">{{ $product->name }}</p>
                             <p class="text-sm font-extrabold text-brand-600"><x-money :amount="$product->price" /></p>

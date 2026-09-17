@@ -1,11 +1,7 @@
 <div class="space-y-12">
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
         <div class="aspect-square overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800">
-            @if ($product->images->first())
-                <img src="{{ $product->images->first()->url }}" alt="{{ $product->name }}" class="h-full w-full object-cover">
-            @else
-                <div class="flex h-full w-full items-center justify-center text-gray-400">No image</div>
-            @endif
+            <x-product-image :product="$product" />
         </div>
 
         <div>
